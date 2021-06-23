@@ -31,6 +31,11 @@ An extra 'Bot' category is also created which is only visible and editable by th
 
 ## Moderation
 
+Admins have the following permissions:
+- Manage server 
+- Mention @everyone, @here and all roles
+- Manage messages
+
 ### Actions
 
 Most actions are made through specific commands:
@@ -38,10 +43,10 @@ Most actions are made through specific commands:
 - `/kick <member>` & `/ban <member>`: If the targeted member is a citizen, a vote
 starts and only if it is approved by a certain number of citizens will the action
 execute.
-- `/create text <channel_name> [roles]`: Creates a new text channel in the main
+- `/create text <name> [roles]`: Creates a new text channel in the main
 category only visible to the admins and roles listed after the channel name.
 If the list is empty, the channel is made public to everyone.
-- `/create voice <channel_name> [roles]`: Creates a new voice and text channel pair
+- `/create voice <name> [roles]`: Creates a new voice and text channel pair
 in the VC category only visible to the admins and roles listed after the channel name.
 If the list is empty, the channels are made public to everyone. The text channel is
 only visible to an user when they join the voice channel.
@@ -58,6 +63,16 @@ so that the changes can be undoed.
 - `/save`: Stores actions made to a message.
 - `/load <msg_id>`: Restores server to a previous state from a message written by `/save` in the past.
 Requires a vote.
+- `/create role <name>`: Creates a new role with a given name.
+- `/rank <role> <above_role>`: Creates a new role such 
+- `/invite_bot <invite_url>`: Starts a vote to invite a new bot to the server. 'Manage server'
+permission is added temporarily to the admin user, until they add the bot to the server or
+too much time passes. Any bot that is invited which doesn't match the of ID of the URL
+posted is kicked.
+- `/rename <channel> <name>`: Renames a text channel or a voice/text channel pair.
+- `/set guild name <name>`: Renames the guild.
+- `/set guild icon`: Sets the guild icon to the attached image.
+- `/set guild banner`: Sets the guild banner to the attached image.
 
 ## Setup
 
