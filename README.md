@@ -54,6 +54,10 @@ execute. The channels are never really deleted, just moved to an hidden category
 so that the changes can be undoed.
 - `/trash`: Shows which channels were deleted and can be restored
 - `/restore`: Restores a channel which was deleted.
+- `/undo`: Undoes the previous action (except `/kick`). May require a vote, depending on the command made.
+- `/save`: Stores actions made to a message.
+- `/load <msg_id>`: Restores server to a previous state from a message written by `/save` in the past.
+Requires a vote.
 
 ## Setup
 
