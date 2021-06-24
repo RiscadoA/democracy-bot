@@ -77,5 +77,6 @@ posted is kicked.
 ## Setup
 
 This repository should be forked so that server members can create pull requests
-and propose changes to the bots functionality. The bot is implemented using python
-and [discord.py](https://github.com/Rapptz/discord.py)
+and propose changes to the bots functionality. The bot is implemented using node.js
+and [discord.js](https://github.com/discordjs/discord.js). The environment variable
+BOT_TOKEN should be set to the bot token.

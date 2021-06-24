@@ -1,0 +1,14 @@
+{
+    "name": "democracy-bot",
+    "description": "",
+    "version": "1.0.0",
+    "main": "bot.js",
+    "scripts": {
+        "start": "node bot.js"
+    },
+    "dependencies": {
+        "discord.js": "^13.0.0-dev.e0efcc6ab0e3f060e30438c0d990c9465c6134df",
+        "dotenv": "^10.0.0",
+        "request": "2.88.2"
+    }
+}
