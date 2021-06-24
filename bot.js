@@ -92,8 +92,6 @@ client.on('ready', async () => {
         guild = await create_guild();
     }
 
-    client.application?.commands.set([]);
-
     // Load bot configuration from channels
     await load_config(guild);
 });
