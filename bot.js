@@ -139,10 +139,17 @@ client.on('guildMemberAdd', async member => {
 client.on('interaction', async interaction => {
   const guild = client.guilds.cache.first();
 
-  
   if (!interaction.isCommand()) return;
   if (interaction.commandName === 'echo') {
-    await interaction.reply(interaction.options.get('input').value);
+    let button = new Discord.MessageButton();
+    button.setLabel('Test');
+    
+    await interaction.reply({
+      content: interaction.options.get('input').value,
+      components: [[
+        button
+      ]]
+    });
   }
   else if (interaction.commandName === 'reload') {
     // Set commands
