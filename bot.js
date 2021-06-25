@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const Discord = require('discord.js');
 const client = new Discord.Client({ intents: Discord.Intents.ALL });
+const Actions = require('./actions');
 
 // ================================ Constants =================================
 
@@ -142,13 +143,19 @@ client.on('interaction', async interaction => {
   if (!interaction.isCommand()) return;
   if (interaction.commandName === 'echo') {
     let button = new Discord.MessageButton();
-    button.setLabel('Test');
+    button.setLabel('aaaaaaaaaaaaaaaa');
+    button.setStyle('PRIMARY');
+    button.setCustomID('yes');
     
     await interaction.reply({
       content: interaction.options.get('input').value,
-      components: [[
-        button
-      ]]
+      components: [
+        [button, button, button, button, button],
+        [button, button, button, button, button],
+        [button, button, button, button, button],
+        [button, button, button, button, button],
+        [button, button, button, button, button],
+      ]
     });
   }
   else if (interaction.commandName === 'reload') {
@@ -186,6 +193,7 @@ async function create_guild() {
 
       // Info text channels
       { "type": "text", "parentID": 0, "name": "info" },
+      { "type": "text", "parentID": 0, "name": "democracy" },
       { "type": "text", "parentID": 0, "name": "events", "permissionOverwrites": EVENTS_CHANNEL_PERMS },
 
       // Admin channels
