@@ -1,0 +1,133 @@
+import * as Discord from "discord.js"
+import COMMANDS_ from "./commands";
+
+export default abstract class Constants {
+  static readonly DEBUG = true;
+
+  static readonly GUILD_NAME = "Democracy Guild";
+
+  static readonly PARTIAL_ROLE_IDS: Record<string, number> = {
+    "everyone": 0,
+    "Bootstrap": 1,
+    "Admin": 2,
+    "Citizen": 3,
+  };
+
+  static readonly PARTIAL_CATEGORY_IDS: Record<string, number> = {
+    "meta": 0,
+    "main": 1,
+    "vc": 2,
+    "admin": 3,
+    "archive": 4,
+    "bot": 5,
+  };
+
+  // Roles given to the first member
+  static readonly SETUP_ROLES: string[] = [
+    "Bootstrap", // Necessary for completing the setup of the server
+    "Admin",
+    "Citizen",
+  ];
+
+  // Role permissions
+  static readonly ROLE_PERMS: Record<string, Discord.PermissionString[]> = {
+    "Bootstrap": [
+      "ADMINISTRATOR"
+    ],
+    "Admin": [
+      "MANAGE_MESSAGES",
+      "MANAGE_EMOJIS",
+      "MANAGE_NICKNAMES",
+    ],
+    "Citizen": []
+  };
+
+  // Permission overwrites for categories
+  static readonly PARTIAL_CATEGORY_PERMS: Record<string, Discord.PartialOverwriteData[]> = {
+    "meta": [
+      {
+        id: Constants.PARTIAL_ROLE_IDS["everyone"],
+        type: "role",
+        deny: ["SEND_MESSAGES"],
+      },
+    ],
+    "main": [],
+    "vc": [],
+    "admin": [
+      {
+        "id": Constants.PARTIAL_ROLE_IDS["everyone"],
+        "type": "role",
+        "deny": ["VIEW_CHANNEL"],
+      },
+      {
+        "id": Constants.PARTIAL_ROLE_IDS["Admin"],
+        "type": "role",
+        "allow": ["VIEW_CHANNEL"],
+      },
+    ],
+    "archive": [
+      {
+        "id": Constants.PARTIAL_ROLE_IDS["everyone"],
+        "type": "role",
+        "deny": ["SEND_MESSAGES"],
+      },
+    ],
+    "bot": [
+      {
+        "id": Constants.PARTIAL_ROLE_IDS["everyone"],
+        "type": "role",
+        "deny": ["VIEW_CHANNEL"],
+      },
+      {
+        "id": Constants.PARTIAL_ROLE_IDS["Admin"],
+        "type": "role",
+        "allow": ["VIEW_CHANNEL"],
+      },
+    ]
+  };
+
+  // Permission overwrites for text channels.
+  static readonly PARTIAL_CHANNEL_PERMS: Record<string, Record<string, Discord.PartialOverwriteData[]>> = {
+    "meta": {
+      "events": [
+        {
+          id: Constants.PARTIAL_ROLE_IDS["Admin"],
+          type: "role",
+          allow: ["SEND_MESSAGES"],
+          deny: ["MANAGE_MESSAGES"],
+        },
+      ],
+    },
+    "main": {},
+    "vc": {},
+    "admin": {},
+    "archive": {},
+  };
+
+  // Channel structure (categories and text channels)
+  static readonly CHANNEL_STRUCTURE: Record<string, string[]> = {
+    "meta": [
+      "info",
+      "democracy",
+      "events",
+    ],
+    "main": [
+      "general"
+    ],
+    "vc": [],
+    "admin": [
+      "general"
+    ],
+    "archive": []
+  }
+
+  // Message shown when setting up the guild
+  static readonly SETUP_MSG: string =
+    "Hi! To finish the setup you must give the permission 'application.commands' to the bot. " +
+    "This can be done by going to the OAuth2 section in the bot application page and "         +
+    "generating a OAuth2 URL with the correct permission. So that you can authorize the bot, " +
+    "you received a temporary Administrator permission which will be removed when another "    +
+    "user joins the server. Before that happens, you must finish the bot setup.";
+
+  static readonly COMMANDS = COMMANDS_;
+}

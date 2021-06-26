@@ -2,14 +2,19 @@
     "name": "democracy-bot",
     "description": "",
     "version": "1.0.0",
-    "main": "bot.js",
+    "main": "dist/bot.js",
     "scripts": {
-        "start": "node bot.js"
+        "start": "tsc && node dist/bot.js"
     },
     "dependencies": {
-        "node": "^16.3.0",
-        "discord.js": "13.0.0-dev.e0efcc6ab0e3f060e30438c0d990c9465c6134df",
+        "@discordjs/voice": "^0.5.0",
+        "discord.js": "^13.0.0-dev.c850ae10270076c4b2e10b130dd8f88eed4ed201",
         "dotenv": "^10.0.0",
+        "node": "^16.3.0",
+        "patch-package": "^6.4.7",
         "request": "2.88.2"
+    },
+    "devDependencies": {
+        "typescript": "^4.3.4"
     }
 }

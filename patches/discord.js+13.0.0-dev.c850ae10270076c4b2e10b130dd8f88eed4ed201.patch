@@ -1,0 +1,13 @@
+diff --git a/node_modules/discord.js/typings/index.d.ts b/node_modules/discord.js/typings/index.d.ts
+index 64505d1..cba88d0 100644
+--- a/node_modules/discord.js/typings/index.d.ts
++++ b/node_modules/discord.js/typings/index.d.ts
+@@ -3701,7 +3701,7 @@ declare module 'discord.js' {
+     id?: Snowflake | number;
+     name: string;
+     topic?: string;
+-    type?: ChannelType;
++    type?: string;
+     parentID?: Snowflake | number;
+     permissionOverwrites?: PartialOverwriteData[];
+   }
