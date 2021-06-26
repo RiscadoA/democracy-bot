@@ -1,6 +1,9 @@
 import { Guild, TextChannel } from "discord.js";
 import { Base } from './base'
+import { CreateRole } from "./create_role";
+import { DeleteRole } from "./delete_role";
 import { Edit } from "./edit";
+import { Kick } from "./kick";
 
 export async function logAction(guild: Guild, action: Base) {
   const bot = guild.channels.cache.find(ch => ch.name === "bot" && ch.type === "category");
@@ -34,10 +37,10 @@ export async function logUndo(guild: Guild): Promise<Base> {
     await msg.delete();
     action = JSON.parse(json) as Base;
     switch (action.type) {
-      case "edit":
-        let d = action as Edit
-        action = new Edit(d.prev, d.next); 
-        break;
+      case "edit": { let d = action as Edit; action = new Edit(d.prev, d.next); break; }
+      case "kick": { let d = action as Kick; action = new Kick(d.member); break; }
+      case "create_role": { let d = action as CreateRole; action = new CreateRole(d.roleOptions); break; }
+      case "delete_role": { let d = action as DeleteRole; action = new DeleteRole(d.roleOptions); break; }
     }
 
     // Only stop when an action that is revertable is found

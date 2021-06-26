@@ -1,6 +1,5 @@
 import * as Discord from "discord.js";
 import Base, { Clearance } from "./base";
-import Constants from "../constants";
 import * as Actions from "../actions";
 
 export default class Edit implements Base {
