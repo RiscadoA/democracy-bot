@@ -106,9 +106,7 @@ export default abstract class Constants {
       "democracy",
       "events",
     ],
-    "main": [
-      "general",
-    ],
+    "main": [],
     "vc": [],
     "admin": [
       "general",

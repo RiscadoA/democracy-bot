@@ -1,5 +1,6 @@
 import * as Discord from "discord.js";
 import Base from "./base";
+import * as Actions from "../actions";
 
 export default class Kick implements Base {
   data = {
@@ -15,15 +16,6 @@ export default class Kick implements Base {
 
   async callback(interaction: Discord.CommandInteraction) {
     const member = interaction.options.get('member').member as Discord.GuildMember;
-    if (member.user) {
-      const content = member.user.username + ' was kicked!';
-      await member.kick();
-      await interaction.reply({ content: content, ephemeral: true });
-    }
-    else {
-      await interaction.reply({ content: "Couldn't kick member, cast to Discord.GuildMember failed", ephemeral: true })
-    }
-    
-    return null;
+    return new Actions.Kick(member);
   };
 }
