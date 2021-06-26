@@ -3,7 +3,7 @@ import Base from "./base";
 import Constants from "../constants";
 
 export default class Kick implements Base {
-  data: {
+  data = {
     name: 'kick',
     description: 'Kicks a member',
     options: [{

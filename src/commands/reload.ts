@@ -1,9 +1,10 @@
 import * as Discord from "discord.js";
 import Base from "./base";
 import Constants from "../constants";
+import { repairGuild } from "../guild";
 
 export default class Reload implements Base {
-  data: {
+  data = {
     name: 'reload',
     description: 'Reloads a bot module',
     options: [{
@@ -17,8 +18,8 @@ export default class Reload implements Base {
           value: "commands",
         },
         {
-          name: "All",
-          value: "all",
+          name: "Guild",
+          value: "guild",
         },
       ]
     }],
@@ -28,9 +29,14 @@ export default class Reload implements Base {
     const guild = interaction.guild;
 
     switch (interaction.options.get("what").value as string) {
-      case "all":
       case "commands":
-        await guild.commands.set(Constants.COMMANDS.map((cmd: Base) => cmd.data));
+        await guild.commands.set(Constants.COMMANDS.map(cmd => cmd.data)).catch(async reason => {
+          console.log(reason);
+          await interaction.reply({ content: "Couldn't reload commands, error sent to console", ephemeral: true })
+        });
+        break;
+      case "guild":
+        await repairGuild(guild);
         break;
     }
 

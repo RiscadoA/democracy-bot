@@ -48,7 +48,7 @@ export default abstract class Constants {
       {
         id: Constants.PARTIAL_ROLE_IDS["everyone"],
         type: "role",
-        deny: ["SEND_MESSAGES"],
+        deny: ["SEND_MESSAGES", "MANAGE_MESSAGES"],
       },
     ],
     "main": [],
@@ -93,8 +93,7 @@ export default abstract class Constants {
         {
           id: Constants.PARTIAL_ROLE_IDS["Admin"],
           type: "role",
-          allow: ["SEND_MESSAGES"],
-          deny: ["MANAGE_MESSAGES"],
+          allow: ["SEND_MESSAGES", "MANAGE_MESSAGES"],
         },
       ],
     },
@@ -123,11 +122,15 @@ export default abstract class Constants {
 
   // Message shown when setting up the guild
   static readonly SETUP_MSG: string =
-    "Hi! To finish the setup you must give the permission 'application.commands' to the bot. " +
-    "This can be done by going to the OAuth2 section in the bot application page and "         +
-    "generating a OAuth2 URL with the correct permission. So that you can authorize the bot, " +
-    "you received a temporary Administrator permission which will be removed when another "    +
+    "Hi! To finish the setup you must give the permission 'application.commands' to the bot. "    +
+    "This can be done by going to the OAuth2 section in the bot application page and "            +
+    "generating a OAuth2 URL with the correct permission. So that you can authorize the bot, "    +
+    "you received a temporary Administrator permission which will be removed when another "       +
     "user joins the server. Before that happens, you must finish the bot setup.";
+  
+  static readonly SETUP_FAILED_MSG: string =
+    "Couldn't setup the server, have you followed the instructions of the previous message? "     +
+    "To retry, make everyone leave the server and rejoin it."
 
   static readonly COMMANDS = COMMANDS_;
 }
