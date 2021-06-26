@@ -6,7 +6,7 @@ to implement some kind of democracy where the members of the server elect N
 admins/moderators periodically. Users are awarded 'citizenship' when they've
 achieved some kind of activity quota (for example, 1k messages and 1 month
 membership). Only users with 'citizenship' may vote and register as candidates
-to elections.
+for elections.
 
 ## Configuration
 
