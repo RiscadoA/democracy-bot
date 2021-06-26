@@ -1,8 +1,10 @@
 import * as Discord from "discord.js";
-import Base from "./base";
+import Base, { Clearance } from "./base";
 import * as Actions from "../actions";
 
 export default class Kick implements Base {
+  clearance: Clearance = "admin";
+
   data = {
     name: 'kick',
     description: 'Kicks a member',
@@ -12,6 +14,7 @@ export default class Kick implements Base {
       description: 'The member to kick',
       required: true,
     }],
+    defaultPermission: false,
   };
 
   async callback(interaction: Discord.CommandInteraction) {

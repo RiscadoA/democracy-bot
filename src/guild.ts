@@ -150,11 +150,57 @@ export async function startGuild(guild: Discord.Guild) {
   await info_channel.bulkDelete(100); // Clear channel
 
   // Activate commands
-  guild.commands.set(Constants.COMMANDS.map(cmd => cmd.data)).catch(reason => {
+  await updateGuildCommands(guild).catch(reason => {
     info_channel.send("<@&" + bootstrap_role.id + "> " + Constants.SETUP_FAILED_MSG);
     console.log(reason);
   });
 
   // Remove bootstrap role so every member that has it loses it.
   bootstrap_role.delete();  
+}
+
+export async function updateGuildCommands(guild: Discord.Guild) {
+  const admin_role = guild.roles.cache.find(r => r.name === "Admin");
+  const citizen_role = guild.roles.cache.find(r => r.name === "Citizen");
+  
+  return guild.commands.set(Constants.COMMANDS.map(cmd => cmd.data)).then(() => {
+    Constants.COMMANDS.forEach(cmd => {
+      let perms: Discord.ApplicationCommandPermissionData[];
+      
+      switch (cmd.clearance) {
+        case "admin":
+          perms = [
+            {
+              id: admin_role.id,
+              type: "ROLE",
+              permission: true,
+            }
+          ]
+          break;
+
+        case "citizen":
+          perms = [
+            {
+              id: citizen_role.id,
+              type: "ROLE",
+              permission: true,
+            }
+          ]
+          break;
+
+        case "none":
+          perms = [
+            {
+              id: guild.roles.everyone.id,
+              type: "ROLE",
+              permission: true,
+            }
+          ]
+          break;
+      }
+
+      const id = guild.commands.cache.find(c => c.name == cmd.data.name);
+      guild.commands.setPermissions(id, perms);
+    });
+  });
 }

@@ -1,9 +1,11 @@
 import * as Discord from "discord.js";
-import Base from "./base";
+import Base, { Clearance } from "./base";
 import Constants from "../constants";
 import { repairGuild } from "../guild";
 
 export default class Reload implements Base {
+  clearance: Clearance = "admin";
+  
   data = {
     name: 'reload',
     description: 'Reloads a bot module',
@@ -23,6 +25,7 @@ export default class Reload implements Base {
         },
       ]
     }],
+    defaultPermission: false,
   };
 
   async callback(interaction: Discord.CommandInteraction) {
