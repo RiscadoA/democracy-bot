@@ -7,6 +7,7 @@ export type EditState = {
 }
 
 export class Edit extends Base {
+  type: string = "edit";
   needs_vote: boolean = false;
   prev: EditState;
   next: EditState;
@@ -22,8 +23,12 @@ export class Edit extends Base {
       await guild.setName(this.prev.name);
     }
     if (this.prev.icon !== this.next.icon) {
-      await guild.setIcon(this.prev.icon);
+      await guild.setIcon(this.prev.icon).catch(err => {
+        console.log("Couldn't set new icon");
+      });
     }
+
+    return true;
   }
 
   async apply(guild: Guild) {
@@ -31,7 +36,9 @@ export class Edit extends Base {
       await guild.setName(this.next.name);
     }
     if (this.prev.icon !== this.next.icon) {
-      await guild.setIcon(this.next.icon);
+      await guild.setIcon(this.next.icon).catch(err => {
+        console.log("Couldn't set new icon");
+      });
     }
   }
 }

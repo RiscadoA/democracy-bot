@@ -32,6 +32,7 @@ client.on('guildMemberAdd', async member => {
 client.on('interaction', async interaction => {
   if (!interaction.isCommand()) return;
 
+  const guild = interaction.guild;
   const cmd = Constants.COMMANDS.find(cmd => cmd.data.name === interaction.commandName);
   if (!cmd) {
     return;
@@ -45,7 +46,7 @@ client.on('interaction', async interaction => {
       interaction.reply({ content: "Applied action successfully", ephemeral: true });
     });
 
-    // TODO: Add action to action log
+    await Actions.logAction(guild, action);
   }
 });
 

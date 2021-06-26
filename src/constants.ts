@@ -77,12 +77,7 @@ export default abstract class Constants {
         "id": Constants.PARTIAL_ROLE_IDS["everyone"],
         "type": "role",
         "deny": ["VIEW_CHANNEL"],
-      },
-      {
-        "id": Constants.PARTIAL_ROLE_IDS["Admin"],
-        "type": "role",
-        "allow": ["VIEW_CHANNEL"],
-      },
+      }
     ]
   };
 
@@ -101,6 +96,7 @@ export default abstract class Constants {
     "vc": {},
     "admin": {},
     "archive": {},
+    "bot": {}
   };
 
   // Channel structure (categories and text channels)
@@ -111,13 +107,16 @@ export default abstract class Constants {
       "events",
     ],
     "main": [
-      "general"
+      "general",
     ],
     "vc": [],
     "admin": [
-      "general"
+      "general",
     ],
-    "archive": []
+    "archive": [],
+    "bot": [
+      "log",
+    ]
   }
 
   // Message shown when setting up the guild
