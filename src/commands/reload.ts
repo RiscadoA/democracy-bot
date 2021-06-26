@@ -41,5 +41,6 @@ export default class Reload implements Base {
     }
 
     await interaction.reply({ content: 'Done', ephemeral: true });
+    return null;
   };
 }

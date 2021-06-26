@@ -1,6 +1,5 @@
 import * as Discord from "discord.js";
 import Base from "./base";
-import Constants from "../constants";
 
 export default class Kick implements Base {
   data = {
@@ -24,5 +23,7 @@ export default class Kick implements Base {
     else {
       await interaction.reply({ content: "Couldn't kick member, cast to Discord.GuildMember failed", ephemeral: true })
     }
+    
+    return null;
   };
 }

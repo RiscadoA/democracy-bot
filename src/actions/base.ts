@@ -1,13 +1,8 @@
-import { Client } from "discord.js";
+import { Guild } from "discord.js";
 
-export class Base {
-  type: string;
-
-  constructor(type: string) {
-    this.type = type;
-  }
-
-  revert(client: Client) {}
-  apply(client: Client) {}
+export abstract class Base {
+  abstract needs_vote: boolean;
+  abstract revert(guild: Guild): Promise<void>;
+  abstract apply(guild: Guild): Promise<void>;
 }
 

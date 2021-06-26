@@ -33,8 +33,19 @@ client.on('interaction', async interaction => {
   if (!interaction.isCommand()) return;
 
   const cmd = Constants.COMMANDS.find(cmd => cmd.data.name === interaction.commandName);
-  if (cmd) {
-    await cmd.callback(interaction);
+  if (!cmd) {
+    return;
+  }
+
+  const action = await cmd.callback(interaction);
+  if (action) {
+    action.apply(interaction.guild).catch(err => {
+      interaction.reply({ content: "Couldn't apply action", ephemeral: true });
+    }).then(() => {
+      interaction.reply({ content: "Applied action successfully", ephemeral: true });
+    });
+
+    // TODO: Add action to action log
   }
 });
 
