@@ -47,6 +47,7 @@ export default class Edit implements Base {
           { name: value, icon: guild.iconURL() }
         );
       case "icon":
+        // TODO: check for icon URL validity
         return new Actions.Edit(
           { name: guild.name, icon: guild.iconURL() },
           { name: guild.name, icon: value }

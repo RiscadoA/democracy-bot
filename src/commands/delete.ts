@@ -17,7 +17,7 @@ export default class Delete implements Base {
         options: [
           {
             name: "name",
-            type: 3, // STRING
+            type: 8, // ROLE
             description: "The name of the role to be deleted",
             required: true,
           }
@@ -33,21 +33,20 @@ export default class Delete implements Base {
     
     // delete role
     if (role_options) {
-      const name = role_options.get("name").value as string;
-      const role = guild.roles.cache.find(r => r.name == name);
+      const role = role_options.get("name").role;
 
-      if (Object.keys(Constants.PARTIAL_ROLE_IDS)[name]) {
-        interaction.reply({ content: "Reserved role, can't be deleted", ephemeral: true });
+      if (Constants.PARTIAL_ROLE_IDS[role.name]) {
+        await interaction.editReply("Reserved role, can't be deleted");
         return null;
       }
       else if (!role) {
-        interaction.reply({ content: "Role not found", ephemeral: true });
+        await interaction.editReply("Role not found");
         return null;
       }
 
       return new Actions.DeleteRole({
         color: role.color,
-        name: name,
+        name: role.name,
       });
     }
     // delete text

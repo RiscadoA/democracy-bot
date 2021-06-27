@@ -1,7 +1,7 @@
 import * as Discord from "discord.js";
 import Base, { Clearance } from "./base";
 import Constants from "../constants";
-import { repairGuild } from "../guild";
+import { repairGuild, updateGuildCommands } from "../guild";
 
 export default class Reload implements Base {
   clearance: Clearance = "admin";
@@ -33,9 +33,9 @@ export default class Reload implements Base {
 
     switch (interaction.options.get("what").value as string) {
       case "commands":
-        await guild.commands.set(Constants.COMMANDS.map(cmd => cmd.data)).catch(async reason => {
+        await updateGuildCommands(guild).catch(async reason => {
           console.log(reason);
-          await interaction.reply({ content: "Couldn't reload commands, error sent to console", ephemeral: true })
+          await interaction.editReply({ content: "Couldn't reload commands, error sent to console" })
         });
         break;
       case "guild":

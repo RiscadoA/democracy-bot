@@ -4,6 +4,7 @@ import { Base } from './base'
 export class Kick extends Base {
   type: string = "kick";
   needs_vote: boolean = false;
+  loggable: boolean = false;
   member: GuildMember;
 
   constructor(member: GuildMember) {

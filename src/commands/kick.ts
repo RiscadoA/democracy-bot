@@ -19,6 +19,7 @@ export default class Kick implements Base {
 
   async callback(interaction: Discord.CommandInteraction) {
     const member = interaction.options.get('member').member as Discord.GuildMember;
+    // TODO: check if the member can be kicked
     return new Actions.Kick(member);
   };
 }

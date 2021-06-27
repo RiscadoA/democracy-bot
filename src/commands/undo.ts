@@ -15,10 +15,10 @@ export default class Undo implements Base {
   async callback(interaction: Discord.CommandInteraction) {
     const action = await logUndo(interaction.guild);
     if (action) {
-      await interaction.reply({ content: `Undid action of type ${action.type}`, ephemeral: true });
+      await interaction.editReply(`Undid action of type ${action.type}`);
     }
     else {
-      await interaction.reply({ content: 'No action to undo', ephemeral: true });
+      await interaction.editReply('No action to undo');
     }
     return null;
   };

@@ -39,27 +39,27 @@ export default class Create implements Base {
     
     // create role
     if (role_options) {
-        const name = role_options.get("name").value as string;
-        const color = role_options.get("color")?.value as string;
+      const name = role_options.get("name").value as string;
+      const color = role_options.get("color")?.value as string;
 
-        if (Object.keys(Constants.PARTIAL_ROLE_IDS)[name]) {
-          interaction.reply({ content: "Reserved role name", ephemeral: true });
-          return null;
-        }
-        else if (guild.roles.cache.find(r => r.name == name)) {
-          interaction.reply({ content: "Duplicate role name", ephemeral: true });
-          return null;
-        }
+      if (Constants.PARTIAL_ROLE_IDS[name]) {
+        await interaction.editReply("Reserved role name");
+        return null;
+      }
+      else if (guild.roles.cache.find(r => r.name == name)) {
+        await interaction.editReply("Duplicate role name");
+        return null;
+      }
 
-        if (color && !/^#[0-9A-F]{6}$/.test(color)) {
-          interaction.reply({ content: "Invalid color, must be hex coded (FFFFFF for example)", ephemeral: true });
-          return null;
-        }
+      if (color && !/^[0-9A-F]{6}$/.test(color)) {
+        await interaction.editReply("Invalid color, must be hex coded (FFFFFF for example)");
+        return null;
+      }
 
-        return new Actions.CreateRole({
-          color: color,
-          name: name,
-        });
+      return new Actions.CreateRole({
+        color: color,
+        name: name,
+      });
     }
     // create text
     // TODO

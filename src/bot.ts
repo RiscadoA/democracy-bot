@@ -38,15 +38,21 @@ client.on('interaction', async interaction => {
     return;
   }
 
-  const action = await cmd.callback(interaction);
+  interaction.defer({ ephemeral: true });
+  let action = await cmd.callback(interaction);
   if (action) {
-    action.apply(interaction.guild).catch(err => {
-      interaction.reply({ content: "Couldn't apply action", ephemeral: true });
-    }).then(() => {
-      interaction.reply({ content: "Applied action successfully", ephemeral: true });
-    });
+    try {
+      await action.apply(interaction.guild);
+    }
+    catch (err) {
+      await interaction.editReply("Couldn't apply action");
+      action = null;
+    }
 
-    await Actions.logAction(guild, action);
+    if (action) {
+      await interaction.editReply("Applied action successfully");
+      await Actions.logAction(guild, action);
+    }
   }
 });
 

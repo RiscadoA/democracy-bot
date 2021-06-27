@@ -9,6 +9,7 @@ export type EditState = {
 export class Edit extends Base {
   type: string = "edit";
   needs_vote: boolean = false;
+  loggable: boolean = true;
   prev: EditState;
   next: EditState;
 

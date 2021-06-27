@@ -4,6 +4,7 @@ import { Base } from './base'
 export class DeleteRole extends Base {
   type: string = "delete_role";
   needs_vote: boolean = false;
+  loggable: boolean = true;
   roleOptions: CreateRoleOptions;
 
   constructor(roleOptions: CreateRoleOptions) {
