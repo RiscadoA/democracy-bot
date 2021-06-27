@@ -3,8 +3,8 @@ import { Base } from './base'
 
 export class CreateRole extends Base {
   type: string = "create_role";
-  needs_vote: boolean = false;
-  loggable: boolean = true;
+  needsVote: boolean = false;
+  
   roleOptions: CreateRoleOptions;
 
   constructor(roleOptions: CreateRoleOptions) {
@@ -19,5 +19,9 @@ export class CreateRole extends Base {
 
   async apply(guild: Guild) {
     await guild.roles.create(this.roleOptions).catch(console.error);
+  }
+
+  what() {
+    return `Created role ${this.roleOptions.name}`;
   }
 }

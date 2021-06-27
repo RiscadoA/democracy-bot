@@ -3,8 +3,7 @@ import { Base } from './base'
 
 export class DeleteRole extends Base {
   type: string = "delete_role";
-  needs_vote: boolean = false;
-  loggable: boolean = true;
+  needsVote: boolean = false;
 
   roleOptions: CreateRoleOptions;
   users: Snowflake[];
@@ -28,5 +27,9 @@ export class DeleteRole extends Base {
 
   async apply(guild: Guild) {
     await guild.roles.cache.find(role => role.name == this.roleOptions.name)?.delete();
+  }
+
+  what() {
+    return `Deleted role ${this.roleOptions.name}`;
   }
 }

@@ -33,17 +33,20 @@ export default class Reload implements Base {
 
     switch (interaction.options.get("what").value as string) {
       case "commands":
-        await updateGuildCommands(guild).catch(async reason => {
+        try {
+          await updateGuildCommands(guild);
+        }
+        catch (reason) {
           console.log(reason);
-          await interaction.editReply({ content: "Couldn't reload commands, error sent to console" })
-        });
+          await interaction.editReply("Couldn't reload commands, error sent to console");
+        }
         break;
       case "guild":
         await repairGuild(guild);
         break;
     }
 
-    await interaction.reply({ content: 'Done', ephemeral: true });
+    await interaction.editReply("Done");
     return null;
   };
 }

@@ -5,6 +5,8 @@ import Kick from './kick';
 import Edit from './edit';
 import Create from './create';
 import Delete from './delete';
+import Give from './give';
+import Take from './take';
 
 const COMMANDS: Base[] = [
   new Reload,
@@ -13,6 +15,8 @@ const COMMANDS: Base[] = [
   new Edit,
   new Create,
   new Delete,
+  new Give,
+  new Take,
 ];
 
 export default COMMANDS; 

@@ -7,19 +7,22 @@ export default class Kick implements Base {
 
   data = {
     name: 'kick',
-    description: 'Kicks a member',
+    description: 'Kicks a user',
     options: [{
-      name: 'member',
+      name: 'user',
       type: 6, // USER
-      description: 'The member to kick',
+      description: 'The user to kick',
       required: true,
     }],
     defaultPermission: false,
   };
 
   async callback(interaction: Discord.CommandInteraction) {
-    const member = interaction.options.get('member').member as Discord.GuildMember;
-    // TODO: check if the member can be kicked
-    return new Actions.Kick(member);
+    const member = interaction.options.get('user').member as Discord.GuildMember;
+    let action = new Actions.Kick(member.user.id);
+    if (member.roles.cache.find(r => r.name === "Citizen")) {
+      action.needsVote = true;
+    }
+    return action; 
   };
 }

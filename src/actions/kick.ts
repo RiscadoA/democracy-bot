@@ -1,18 +1,16 @@
-import { Guild, GuildMember } from "discord.js";
+import { SpawnOptionsWithStdioTuple } from "child_process";
+import { Guild, GuildMember, Snowflake } from "discord.js";
 import { Base } from './base'
 
 export class Kick extends Base {
   type: string = "kick";
-  needs_vote: boolean = false;
-  loggable: boolean = false;
-  member: GuildMember;
+  needsVote: boolean = false;
+  
+  user: Snowflake;
 
-  constructor(member: GuildMember) {
+  constructor(user: Snowflake) {
     super();
-    this.member = member;
-    if (this.member.roles.cache.find(r => r.name == "Citizen")) {
-      this.needs_vote = true;
-    }
+    this.user = user;
   }
 
   async revert(guild: Guild) {
@@ -20,6 +18,13 @@ export class Kick extends Base {
   }
 
   async apply(guild: Guild) {
-    await this.member.kick().catch();
+    const member = await guild.members.fetch(this.user);
+    if (member && member.kickable) {
+      await member.kick();
+    }
+  }
+
+  what() {
+    return `Kicked user <@&${this.user}>`;
   }
 }

@@ -8,8 +8,8 @@ export type EditState = {
 
 export class Edit extends Base {
   type: string = "edit";
-  needs_vote: boolean = false;
-  loggable: boolean = true;
+  needsVote: boolean = false;
+
   prev: EditState;
   next: EditState;
 
@@ -40,6 +40,15 @@ export class Edit extends Base {
       await guild.setIcon(this.next.icon).catch(err => {
         console.log("Couldn't set new icon");
       });
+    }
+  }
+
+  what() {
+    if (this.prev.name !== this.next.name) {
+      return `Changed guild name to ${this.next.name}`;
+    }
+    else {
+      return `Changed guild icon to ${this.next.icon}`;
     }
   }
 }
