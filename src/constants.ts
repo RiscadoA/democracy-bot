@@ -100,7 +100,7 @@ export default abstract class Constants {
         {
           id: Constants.PARTIAL_ROLE_IDS["Admin"],
           type: "role",
-          deny: ["VIEW_CHANNEL"],
+          deny: ["SEND_MESSAGES", "MANAGE_MESSAGES"],
         }
       ]
     },
