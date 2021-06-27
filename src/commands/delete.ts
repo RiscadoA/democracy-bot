@@ -47,7 +47,7 @@ export default class Delete implements Base {
       return new Actions.DeleteRole({
         color: role.color,
         name: role.name,
-      });
+      }, guild.roles.cache.find(r => r.id == role.id).members.map(member => member.user.id));
     }
     // delete text
     // TODO
