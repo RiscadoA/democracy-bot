@@ -7,8 +7,8 @@ export type EditState = {
 }
 
 export class Edit extends Base {
-  type: string = "edit";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "edit";
+  type: string = Edit.BASE_TYPE;
 
   prev: EditState;
   next: EditState;

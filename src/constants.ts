@@ -1,5 +1,6 @@
 import * as Discord from "discord.js"
 import COMMANDS_ from "./commands";
+import { ActionConfig } from "./config";
 
 export default abstract class Constants {
   static readonly DEBUG = true;
@@ -116,6 +117,64 @@ export default abstract class Constants {
       "log",
     ]
   }
+
+  static readonly DEFAULT_ACTION_CONFIG: Record<string, ActionConfig> = {
+    "set.action": {
+      needsVote: true,
+      voteDuration: 48,
+      yesRatio: 70,
+      earlyVotes: 20,
+      lateVotes: 10,
+    },
+    "set.name": {
+      needsVote: false,
+    },
+    "set.icon": {
+      needsVote: false,
+    },
+    "create.role": {
+      needsVote: false,
+    },
+    "create.text": {
+      needsVote: false,
+    },
+    "delete.role": {
+      needsVote: false,
+    },
+    "delete.text": {
+      needsVote: true,
+      voteDuration: 12,
+      yesRatio: 50,
+      earlyVotes: 10,
+      lateVotes: 5,
+    },
+    "give.role": {
+      needsVote: false,
+    },
+    "give.role.citizen": {
+      needsVote: false,
+    },
+    "take.role": {
+      needsVote: false,
+    },
+    "take.role.citizen": {
+      needsVote: true,
+      voteDuration: 12,
+      yesRatio: 50,
+      earlyVotes: 10,
+      lateVotes: 5,
+    },
+    "kick": {
+      needsVote: false,
+    },
+    "kick.citizen": {
+      needsVote: true,
+      voteDuration: 12,
+      yesRatio: 50,
+      earlyVotes: 10,
+      lateVotes: 5,
+    },
+  };
 
   // Message shown when setting up the guild
   static readonly SETUP_MSG: string =

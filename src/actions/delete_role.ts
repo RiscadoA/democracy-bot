@@ -2,8 +2,8 @@ import { CreateRoleOptions, Guild, Snowflake } from "discord.js";
 import { Base } from './base'
 
 export class DeleteRole extends Base {
-  type: string = "delete_role";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "delete.role";
+  type: string = DeleteRole.BASE_TYPE;
 
   roleOptions: CreateRoleOptions;
   users: Snowflake[];

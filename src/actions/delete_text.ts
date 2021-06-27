@@ -1,10 +1,10 @@
-import { GuildChannelCreateOptions, Guild, PermissionOverwrites, Snowflake, TextChannel } from "discord.js";
+import { Guild, Snowflake, TextChannel } from "discord.js";
 import { Base } from './base'
 import { archiveLoad, archiveStore } from "../archive";
 
 export class DeleteText extends Base {
-  type: string = "delete_text";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "delete.text";
+  type: string = DeleteText.BASE_TYPE;
   
   id: Snowflake;
 

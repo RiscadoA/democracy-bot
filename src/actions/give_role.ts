@@ -2,8 +2,8 @@ import { Guild, Snowflake } from "discord.js";
 import { Base } from './base'
 
 export class GiveRole extends Base {
-  type: string = "give_role";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "give.role";
+  type: string = GiveRole.BASE_TYPE;
 
   roleName: string;
   user: Snowflake;

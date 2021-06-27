@@ -3,6 +3,7 @@ require('dotenv').config()
 import * as Discord from "discord.js";
 import * as Actions from "./actions";
 import Constants from "./constants";
+import Config from "./config";
 import { buildGuild, setupGuild, startGuild } from "./guild";
 
 const client = new Discord.Client({ intents: Discord.Intents.ALL });
@@ -41,6 +42,8 @@ client.on('interaction', async interaction => {
   interaction.defer({ ephemeral: true });
   let action = await cmd.callback(interaction);
   if (action) {
+    // TODO: Check config to see if a vote is necessary
+
     try {
       await action.apply(interaction.guild);
     }

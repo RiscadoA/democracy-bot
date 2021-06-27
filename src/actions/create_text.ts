@@ -3,8 +3,8 @@ import { Base } from './base'
 import { archiveStore } from "../archive";
 
 export class CreateText extends Base {
-  type: string = "create_text";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "create.text";
+  type: string = CreateText.BASE_TYPE;
   
   name: string;
   roleName?: string;

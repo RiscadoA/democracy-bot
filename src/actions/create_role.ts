@@ -2,8 +2,8 @@ import { CreateRoleOptions, Guild } from "discord.js";
 import { Base } from './base'
 
 export class CreateRole extends Base {
-  type: string = "create_role";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "create.role";
+  type: string = CreateRole.BASE_TYPE;
   
   roleOptions: CreateRoleOptions;
 

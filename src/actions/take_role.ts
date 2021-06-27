@@ -1,9 +1,9 @@
-import { Guild, Snowflake } from "discord.js";
+import { Guild, GuildMember, Snowflake } from "discord.js";
 import { Base } from './base'
 
 export class TakeRole extends Base {
-  type: string = "take_role";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "take.role";
+  type: string = TakeRole.BASE_TYPE;
 
   roleName: string;
   user: Snowflake;
@@ -12,6 +12,9 @@ export class TakeRole extends Base {
     super();
     this.roleName = roleName;
     this.user = user;
+    if (roleName === "Citizen") {
+      this.type = "take.role.citizen";
+    }
   }
 
   async revert(guild: Guild) {

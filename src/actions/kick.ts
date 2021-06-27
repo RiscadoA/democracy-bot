@@ -3,14 +3,17 @@ import { Guild, GuildMember, Snowflake } from "discord.js";
 import { Base } from './base'
 
 export class Kick extends Base {
-  type: string = "kick";
-  needsVote: boolean = false;
+  static readonly BASE_TYPE: string = "kick";
+  type: string = Kick.BASE_TYPE;
   
   user: Snowflake;
 
-  constructor(user: Snowflake) {
+  constructor(guild: Guild, member: GuildMember) {
     super();
-    this.user = user;
+    this.user = member.id;
+    if (member.roles.cache.find(r => r.name === "Citizen")) {
+      this.type = "kick.citizen";
+    }
   }
 
   async revert(guild: Guild) {

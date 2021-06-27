@@ -19,10 +19,7 @@ export default class Kick implements Base {
 
   async callback(interaction: Discord.CommandInteraction) {
     const member = interaction.options.get('user').member as Discord.GuildMember;
-    let action = new Actions.Kick(member.user.id);
-    if (member.roles.cache.find(r => r.name === "Citizen")) {
-      action.needsVote = true;
-    }
+    let action = new Actions.Kick(interaction.guild, member);
     return action; 
   };
 }

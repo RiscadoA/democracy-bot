@@ -61,9 +61,6 @@ export default class Take implements Base {
       }
 
       const action = new Actions.TakeRole(role.name, user.id);
-      if (role.name === "Citizen") {
-        action.needsVote = true;
-      }
       return action;
     }
 

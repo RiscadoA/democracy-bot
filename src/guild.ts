@@ -3,7 +3,6 @@
 // If no guild was found a new one is created
 
 import * as Discord from 'discord.js';
-import { stringify } from 'querystring';
 import Constants from './constants';
 
 function fromPartialOverwrites(guild: Discord.Guild, partial: Discord.PartialOverwriteData): Discord.OverwriteResolvable {
