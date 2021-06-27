@@ -6,6 +6,8 @@ import { CreateRole } from "./create_role";
 import { DeleteRole } from "./delete_role";
 import { GiveRole } from "./give_role";
 import { TakeRole } from "./take_role";
+import { CreateText } from "./create_text";
+import { DeleteText } from "./delete_text";
 
 export async function logAction(guild: Guild, action: Base) {
   const bot = guild.channels.cache.find(ch => ch.name === "bot" && ch.type === "category");
@@ -44,6 +46,8 @@ export async function logUndo(guild: Guild): Promise<Base> {
       case "delete_role": { let d = action as DeleteRole; action = new DeleteRole(d.roleOptions, d.users); break; }
       case "give_role": { let d = action as GiveRole; action = new GiveRole(d.roleName, d.user); break; }
       case "take_role": { let d = action as TakeRole; action = new TakeRole(d.roleName, d.user); break; }
+      case "create_text": { let d = action as CreateText; action = new CreateText(d.name, d.roleName); break; }
+      case "delete_text": { let d = action as DeleteText; action = new DeleteText(d.name, d.roles); break; }
     }
 
     // Only stop when an action that is revertable is found

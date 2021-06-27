@@ -2,6 +2,7 @@ import * as Discord from "discord.js";
 import Base, { Clearance } from "./base";
 import Constants from "../constants";
 import * as Actions from "../actions";
+import { CreateText } from "../actions";
 
 export default class Create implements Base {
   clearance: Clearance = "admin";
@@ -29,13 +30,33 @@ export default class Create implements Base {
           }
         ]
       },
+      {
+        name: "text",
+        type: 1, // SUB_COMMAND
+        description: 'Create a text channel',
+        options: [
+          {
+            name: "name",
+            type: 3, // STRING
+            description: "The name of the new text channel",
+            required: true,
+          },
+          {
+            name: "role",
+            type: 8, // ROLE
+            description: "If sent, makes the channel private to this role",
+            required: false,
+          }
+        ]
+      },
     ],
     defaultPermission: false,
   };
 
   async callback(interaction: Discord.CommandInteraction) {
     const guild = interaction.guild;
-    const role_options = interaction.options.get("role").options;
+    const role_options = interaction.options.get("role")?.options;
+    const text_options = interaction.options.get("text")?.options;
     
     // create role
     if (role_options) {
@@ -62,6 +83,19 @@ export default class Create implements Base {
       });
     }
     // create text
+    else if (text_options) {
+      let name = text_options.get("name").value as string;
+      const role = text_options.get("role")?.role;
+
+      // Process name
+      name = name.toLowerCase().replace(/ /g, '-');
+      if (guild.channels.cache.find(ch => ch.name == name && ch.type == "text")) {
+        await interaction.editReply("Duplicate channel name");
+        return null;
+      }
+      
+      return new CreateText(name, role?.name);
+    }
     // TODO
     // create voice
     // TODO

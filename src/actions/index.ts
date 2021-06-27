@@ -6,3 +6,5 @@ export * from "./create_role";
 export * from "./delete_role";
 export * from "./give_role";
 export * from "./take_role";
+export * from "./create_text";
+export * from "./delete_text";

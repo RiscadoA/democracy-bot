@@ -2,6 +2,7 @@ import * as Discord from "discord.js";
 import Base, { Clearance } from "./base";
 import Constants from "../constants";
 import * as Actions from "../actions";
+import { updateGuildCommands } from "../guild";
 
 export default class Delete implements Base {
   clearance: Clearance = "admin";
@@ -23,13 +24,27 @@ export default class Delete implements Base {
           }
         ]
       },
+      {
+        name: "channel",
+        type: 1, // SUB_COMMAND
+        description: 'Delete a text or voice channel',
+        options: [
+          {
+            name: "name",
+            type: 7, // CHANNEL
+            description: "The name of the text or voice channel to be deleted",
+            required: true,
+          }
+        ]
+      },
     ],
     defaultPermission: false,
   };
 
   async callback(interaction: Discord.CommandInteraction) {
     const guild = interaction.guild;
-    const role_options = interaction.options.get("role").options;
+    const role_options = interaction.options.get("role")?.options;
+    const channel_options = interaction.options.get("channel")?.options;
     
     // delete role
     if (role_options) {
@@ -49,10 +64,31 @@ export default class Delete implements Base {
         name: role.name,
       }, guild.roles.cache.find(r => r.id == role.id).members.map(member => member.user.id));
     }
-    // delete text
-    // TODO
-    // delete voice
-    // TODO
+    // delete channel
+    else if (channel_options) {
+      const adminRole = guild.roles.cache.find(r => r.name === "Admin");
+      const channelId = channel_options.get("name").channel.id;
+      const channel = await guild.channels.fetch(channelId);
+      
+      // TODO: Add voice channels
+
+      if (!channel.isText()) {
+        await interaction.editReply("Must be a text channel");
+        return null;
+      }
+
+      if (!channel.parent || channel.parent.name !== "main") {
+        await interaction.editReply("Reserved channel, can't be deleted");
+        return null;
+      }
+      
+      let roles = await Promise.all(channel.permissionOverwrites
+        .filter(p => p.id !== guild.roles.everyone.id && p.id != adminRole.id)
+        .map(async p => (await guild.roles.fetch(p.id))?.name));
+      roles = roles.filter(r => r); // Remove undefined 
+
+      return new Actions.DeleteText(channel.name, roles);
+    }
 
     return null;
   };
