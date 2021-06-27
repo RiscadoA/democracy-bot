@@ -70,7 +70,7 @@ export default abstract class Constants {
       {
         "id": Constants.PARTIAL_ROLE_IDS["everyone"],
         "type": "role",
-        "deny": ["SEND_MESSAGES"],
+        "deny": ["VIEW_CHANNEL"],
       },
     ],
     "bot": [
@@ -95,7 +95,15 @@ export default abstract class Constants {
     },
     "main": {},
     "vc": {},
-    "admin": {},
+    "admin": {
+      "log": [
+        {
+          id: Constants.PARTIAL_ROLE_IDS["Admin"],
+          type: "role",
+          deny: ["VIEW_CHANNEL"],
+        }
+      ]
+    },
     "archive": {},
     "bot": {}
   };
@@ -111,10 +119,11 @@ export default abstract class Constants {
     "vc": [],
     "admin": [
       "general",
+      "log"
     ],
     "archive": [],
     "bot": [
-      "log",
+      "votes",
     ]
   }
 

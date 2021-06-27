@@ -1,10 +1,10 @@
-import { Base, Guild, TextChannel } from "discord.js";
+import { Guild, TextChannel } from "discord.js";
 
 import * as Actions from '.'
 
 export async function logAction(guild: Guild, action: Actions.Base) {
-  const bot = guild.channels.cache.find(ch => ch.name === "bot" && ch.type === "category");
-  const log = guild.channels.cache.find(ch => ch.name === "log" && ch.isText() && ch.parent === bot) as TextChannel;
+  const admin = guild.channels.cache.find(ch => ch.name === "admin" && ch.type === "category");
+  const log = guild.channels.cache.find(ch => ch.name === "log" && ch.isText() && ch.parent === admin) as TextChannel;
   const json = JSON.stringify(action);
   await log.send({
     content: json,
@@ -13,15 +13,12 @@ export async function logAction(guild: Guild, action: Actions.Base) {
 }
 
 export async function logUndo(guild: Guild): Promise<Actions.Base> {
-  const bot = guild.channels.cache.find(ch => ch.name === "bot" && ch.type === "category");
-  const log = guild.channels.cache.find(ch => ch.name === "log" && ch.isText() && ch.parent === bot) as TextChannel;
+  const admin = guild.channels.cache.find(ch => ch.name === "admin" && ch.type === "category");
+  const log = guild.channels.cache.find(ch => ch.name === "log" && ch.isText() && ch.parent === admin) as TextChannel;
 
   let action: Actions.Base;
-  let success: boolean;
 
   do {
-    success = false;
-
     const msgL = await log.messages.fetch({ limit: 1 });
     const msg = msgL?.first();
 
@@ -34,26 +31,10 @@ export async function logUndo(guild: Guild): Promise<Actions.Base> {
       continue;
     }
 
-    const json = msg.content.slice(7, msg.content.length - 4);
-    action = JSON.parse(json) as Actions.Base;
+    action = Actions.fromMessage(msg);
     await msg.delete();
-
-    // Crazy reflection to set the prototype of the action
-    Object.keys(Actions).forEach(key => {
-      if (key !== "Base" && Actions[key].prototype) {
-        if (Actions[key].BASE_TYPE && action.type === Actions[key].BASE_TYPE) {
-          Object.setPrototypeOf(action, Actions[key].prototype);
-          success = true;
-        }
-      }
-    })
-
     // Only stop when an action that is revertable is found
-  } while (!(success && await action.revert(guild)));
-  
-  if (!success) {
-    return null;
-  }
+  } while (!(action && await action.revert(guild)));
 
   return action;
 }

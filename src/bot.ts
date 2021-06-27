@@ -5,6 +5,7 @@ import * as Actions from "./actions";
 import Constants from "./constants";
 import Config from "./config";
 import { buildGuild, setupGuild, startGuild } from "./guild";
+import { startVote, submitVote } from "./vote";
 
 const client = new Discord.Client({ intents: Discord.Intents.ALL });
 
@@ -31,32 +32,42 @@ client.on('guildMemberAdd', async member => {
 });
 
 client.on('interaction', async interaction => {
-  if (!interaction.isCommand()) return;
-
   const guild = interaction.guild;
-  const cmd = Constants.COMMANDS.find(cmd => cmd.data.name === interaction.commandName);
-  if (!cmd) {
-    return;
+  
+  if (interaction.isMessageComponent()) {
+    await submitVote(interaction);
   }
-
-  interaction.defer({ ephemeral: true });
-  let action = await cmd.callback(interaction);
-  if (action) {
-    // TODO: Check config to see if a vote is necessary
-
-    try {
-      await action.apply(interaction.guild);
-    }
-    catch (err) {
-      await interaction.editReply("Couldn't apply action");
-      action = null;
+  else if (interaction.isCommand()) {
+    const cmd = Constants.COMMANDS.find(cmd => cmd.data.name === interaction.commandName);
+    if (!cmd) {
+      return;
     }
 
+    interaction.defer({ ephemeral: true });
+    let action = await cmd.callback(interaction);
     if (action) {
-      await interaction.editReply("Applied action successfully");
-      await Actions.logAction(guild, action);
+      if (Config.actions[action.type]?.needsVote) {
+        await startVote(guild, interaction.user.id, action);
+        await interaction.editReply("This action requires a vote, and so a vote will be started");
+      }
+      else {
+        try {
+          await action.apply(interaction.guild);
+        }
+        catch (err) {
+          await interaction.editReply("Couldn't apply action");
+          action = null;
+        }
+    
+        if (action) {
+          await interaction.editReply("Applied action successfully");
+          await Actions.logAction(guild, action);
+        }
+      }
     }
   }
+
+  
 });
 
 client.login(process.env.BOT_TOKEN)

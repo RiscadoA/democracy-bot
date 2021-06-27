@@ -28,6 +28,6 @@ export class Kick extends Base {
   }
 
   what() {
-    return `Kicked user <@&${this.user}>`;
+    return `Kick user <@${this.user}>`;
   }
 }
