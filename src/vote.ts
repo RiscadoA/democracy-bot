@@ -62,9 +62,11 @@ async function fetchVoteDataCache(guild: Guild) {
 
   (await votes.messages.fetch({limit: 100})).forEach(msg => {
     const json = msg.content.slice(7, msg.content.length - 4);
-    const data = JSON.parse(json);
-    voteDataCache[data.msg].msg = msg.id;
-    voteDataCache[data.msg].action = Actions.updatePrototype(data.action);
+    const data = JSON.parse(json) as VoteData;
+    voteDataCache[data.msg] = {
+      msg: msg.id,
+      action: Actions.updatePrototype(data.action),
+    }
   });
 }
 
@@ -72,19 +74,28 @@ function isVoteDue(dataMsg: Message, data: VoteData) {
   return false;
 }
 
+// TODO: Restructure function
 export async function submitVote(interaction: MessageComponentInteraction) {
   const guild = interaction.guild;
   const channel = interaction.channel as TextChannel;
   const bot = guild.channels.cache.find(ch => ch.name === "bot" && ch.type === "category") as CategoryChannel;
   const votes = guild.channels.cache.find(ch => ch.name === "votes" && ch.parent == bot && ch.type === "text") as TextChannel;
+  const citizen = guild.roles.cache.find(r => r.name === "Citizen");
+  const member = await guild.members.fetch(interaction.member.user.id);
+  
+  // Limit vote to citizens
+  if (!member.roles.cache.find(r => r.id == citizen.id)) {
+    await interaction.reply({content: "Couldn't submit vote: you must be a citizen to vote", ephemeral: true});
+    return;
+  }
 
   const publicMsg = await channel.messages.fetch(interaction.message.id);
 
   // Find data message
-  let dataMsgId = voteDataCache[publicMsg.id].msg;
+  let dataMsgId = voteDataCache[publicMsg.id]?.msg;
   if (!dataMsgId) {
     await fetchVoteDataCache(guild);
-    dataMsgId = voteDataCache[publicMsg.id].msg;
+    dataMsgId = voteDataCache[publicMsg.id]?.msg;
   }
 
   if (!dataMsgId) {
@@ -133,12 +144,20 @@ export async function submitVote(interaction: MessageComponentInteraction) {
 
   // Check if voting ended
   const config = Config.actions[action.type];
+  const earlyVotes = Math.min(config.earlyVotes, citizen.members.size);
+  const lateVotes = Math.min(config.lateVotes, citizen.members.size);
   const totalVotes = data.yes + data.no;
   const yesRatio = data.yes / totalVotes;
   let decision = 0;
 
+  console.log("Vote status:");
+  console.log(`yesRatio ${yesRatio}`);
+  console.log(`totalRatio ${totalVotes}`);
+  console.log(`earlyVotes ${earlyVotes}`);
+  console.log(`lateVotes ${lateVotes}`);
+
   if (isVoteDue(dataMsg, data)) {
-    if (totalVotes >= config.lateVotes) {
+    if (totalVotes >= lateVotes) {
       if (yesRatio >= config.yesRatio) {
         decision = 1;
       }
@@ -147,12 +166,20 @@ export async function submitVote(interaction: MessageComponentInteraction) {
       }
     }
   }
-  else if (data.yes >= config.earlyVotes && yesRatio >= config.yesRatio) {
+  else if (data.yes >= earlyVotes && yesRatio >= config.yesRatio) {
     decision = 1;
   }
 
   // TODO: Provide better stats
   if (decision === 1) {
+    try {
+      await action.apply(guild);
+      await Actions.logAction(guild, action);
+    }
+    catch (err) {
+      await publicMsg.reply("Couldn't apply action");
+    }
+    
     await action.apply(guild);
     await interaction.reply({ content: `Vote counted.`, ephemeral: true });
     await publicMsg.edit({

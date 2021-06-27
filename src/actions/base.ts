@@ -10,17 +10,23 @@ export abstract class Base {
 }
 
 export function updatePrototype(action: Base): Base {
+  let success = false;
+
   // Crazy reflection to set the prototype of the action
   Object.keys(Actions).forEach(key => {
-    if (key !== "Base" && Actions[key].prototype) {
-      if (Actions[key].BASE_TYPE && action.type === Actions[key].BASE_TYPE) {
+    if (!success && key !== "Base" && Actions[key].prototype) {
+      if (Actions[key].BASE_TYPE && action.type.startsWith(Actions[key].BASE_TYPE)) {
         Object.setPrototypeOf(action, Actions[key].prototype);
-        return action;
+        success = true;
       }
     }
   });
 
-  return null;
+  if (!success) {
+    action = null;
+  }
+
+  return action;
 }
 
 export function fromString(data: string): Base {

@@ -131,7 +131,7 @@ export default abstract class Constants {
     "set.action": {
       needsVote: true,
       voteDuration: 48,
-      yesRatio: 70,
+      yesRatio: 0.7,
       earlyVotes: 20,
       lateVotes: 10,
     },
@@ -153,7 +153,7 @@ export default abstract class Constants {
     "delete.text": {
       needsVote: true,
       voteDuration: 12,
-      yesRatio: 50,
+      yesRatio: 0.5,
       earlyVotes: 10,
       lateVotes: 5,
     },
@@ -169,7 +169,7 @@ export default abstract class Constants {
     "take.role.citizen": {
       needsVote: true,
       voteDuration: 12,
-      yesRatio: 50,
+      yesRatio: 0.5,
       earlyVotes: 10,
       lateVotes: 5,
     },
@@ -179,7 +179,7 @@ export default abstract class Constants {
     "kick.citizen": {
       needsVote: true,
       voteDuration: 12,
-      yesRatio: 50,
+      yesRatio: 0.5,
       earlyVotes: 10,
       lateVotes: 5,
     },
