@@ -42,12 +42,8 @@ export async function logUndo(guild: Guild): Promise<Actions.Base> {
     Object.keys(Actions).forEach(key => {
       if (key !== "Base" && Actions[key].prototype) {
         if (Actions[key].BASE_TYPE && action.type === Actions[key].BASE_TYPE) {
-          console.log("SUCCESS");
           Object.setPrototypeOf(action, Actions[key].prototype);
           success = true;
-        }
-        else {
-          console.log("FAILURE");
         }
       }
     })
