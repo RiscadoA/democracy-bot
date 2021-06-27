@@ -35,6 +35,7 @@ export async function buildGuild(client: Discord.Client): Promise<Discord.Guild>
     guild = await createGuild(client);
   }
 
+  console.log("Guild built");
   return guild;
 }
 

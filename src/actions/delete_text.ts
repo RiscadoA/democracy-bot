@@ -23,6 +23,6 @@ export class DeleteText extends Base {
   }
 
   what() {
-    return `Created text channel <#${this.id}>`;
+    return `Deleted text channel <#${this.id}>`;
   }
 }

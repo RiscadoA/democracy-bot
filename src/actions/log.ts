@@ -48,10 +48,11 @@ export async function logUndo(guild: Guild): Promise<Base> {
       case "take_role": { let d = action as TakeRole; action = new TakeRole(d.roleName, d.user); break; }
       case "create_text": { let d = action as CreateText; action = new CreateText(d.name, d.roleName); break; }
       case "delete_text": { let d = action as DeleteText; action = new DeleteText(d.id); break; }
+      default: action = null;
     }
 
     // Only stop when an action that is revertable is found
-  } while (!(await action.revert(guild)));
+  } while (!(action && await action.revert(guild)));
   
   return action;
 }

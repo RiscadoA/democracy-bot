@@ -4,12 +4,6 @@ import Constants from "./constants";
 export async function archiveStore(guild: Guild, channel: TextChannel) {
   const archive = guild.channels.cache.find(ch => ch.name === "archive" && ch.type === "category") as CategoryChannel;
   const adminRole = guild.roles.cache.find(r => r.name === "Admin");
-  
-  // Get new index for the channel
-  const index = 1 + Math.max(0, ...(await archiveQuery(guild, channel.name))
-    .map(x => x.name.match(/\d+$/))
-    .filter(x => x)
-    .map(x => parseInt(x[0])));
 
   // Get roles of channel
   let roles = await Promise.all(channel.permissionOverwrites
@@ -17,7 +11,6 @@ export async function archiveStore(guild: Guild, channel: TextChannel) {
     .map(async p => (await guild.roles.fetch(p.id))?.name));
   roles = roles.filter(r => r); // Remove undefined 
 
-  await channel.setName(channel.name + "-" + index.toString())
   await channel.setParent(archive, { lockPermissions: true });
   await channel.send({
     content: JSON.stringify(roles),
@@ -65,25 +58,29 @@ export async function archiveLoad(guild: Guild, id: Snowflake) {
 
   // Set name
   await channel.setName(channel.name.substr(0, channel.name.search(/-\d+$/)));
+
+  // Delete info message
+  await msg.delete();
 }
 
 // Returns the possible channels that can be restored, with the date of deletion
 // Since channels are stored as <original name>-<number>
-async function archiveQuery(guild: Guild, name: string): Promise<{name: string, date: string}[]> {
+export async function archiveQuery(guild: Guild, name: string): Promise<{channel: TextChannel, date: string}[]> {
   const archive = guild.channels.cache.find(ch => ch.name === "archive" && ch.type === "category") as CategoryChannel;
-  let query = [];
-
-  for (let channel of archive.children.values()) {
-    if (channel.isText() && (new RegExp("^" + name + "-\\d+$")).test(channel.name)) {
-      const msg = (await channel.messages.fetch({ limit: 1 }))?.first();
-      if (msg) {
-        query.push({
-          name: channel.name,
-          date: msg.createdAt.toString()
-        });
-      }
-    }
-  }
   
-  return query;
+  return Promise.all(archive.children
+    .filter(ch => ch.name == name)
+    .map(async ch => {
+      const msg = (await (ch as TextChannel).messages.fetch({ limit: 1 }))?.first();
+      if (msg) {
+        return {
+          channel: ch as TextChannel,
+          date: msg.createdAt.toString()
+        }
+      }
+      else {
+        return null;
+      }
+    })
+    .filter(q => q)); // Remove null
 }
