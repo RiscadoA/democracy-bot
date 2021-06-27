@@ -81,13 +81,8 @@ export default class Delete implements Base {
         await interaction.editReply("Reserved channel, can't be deleted");
         return null;
       }
-      
-      let roles = await Promise.all(channel.permissionOverwrites
-        .filter(p => p.id !== guild.roles.everyone.id && p.id != adminRole.id)
-        .map(async p => (await guild.roles.fetch(p.id))?.name));
-      roles = roles.filter(r => r); // Remove undefined 
 
-      return new Actions.DeleteText(channel.name, roles);
+      return new Actions.DeleteText(channel.id);
     }
 
     return null;

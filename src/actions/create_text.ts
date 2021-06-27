@@ -1,5 +1,6 @@
-import { GuildChannelCreateOptions, Guild } from "discord.js";
+import { GuildChannelCreateOptions, Guild, TextChannel } from "discord.js";
 import { Base } from './base'
+import { archiveStore } from "../archive";
 
 export class CreateText extends Base {
   type: string = "create_text";
@@ -15,8 +16,8 @@ export class CreateText extends Base {
   }
 
   async revert(guild: Guild) {
-    // TODO: Send channel to archive instead of deleting it
-    await guild.channels.cache.find(ch => ch.name === this.name && ch.type === "text")?.delete();
+    const channel = await guild.channels.cache.find(ch => ch.name === this.name && ch.type === "text") as TextChannel;
+    await archiveStore(guild, channel)
     return true;
   }
 
