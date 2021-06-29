@@ -3,6 +3,7 @@
 // If no guild was found a new one is created
 
 import * as Discord from 'discord.js';
+import COMMANDS from './commands';
 import Constants from './constants';
 
 function fromPartialOverwrites(guild: Discord.Guild, partial: Discord.PartialOverwriteData): Discord.OverwriteResolvable {
@@ -163,8 +164,8 @@ export async function updateGuildCommands(guild: Discord.Guild) {
   const admin_role = guild.roles.cache.find(r => r.name === "Admin");
   const citizen_role = guild.roles.cache.find(r => r.name === "Citizen");
   
-  return guild.commands.set(Constants.COMMANDS.map(cmd => cmd.data)).then(() => {
-    Constants.COMMANDS.forEach(cmd => {
+  await guild.commands.set(COMMANDS.map(cmd => cmd.data)).then(async () => {
+    await COMMANDS.forEach(async cmd => {
       let perms: Discord.ApplicationCommandPermissionData[];
       
       switch (cmd.clearance) {
@@ -200,7 +201,7 @@ export async function updateGuildCommands(guild: Discord.Guild) {
       }
 
       const id = guild.commands.cache.find(c => c.name == cmd.data.name);
-      guild.commands.setPermissions(id, perms);
+      await guild.commands.setPermissions(id, perms);
     });
   });
 }

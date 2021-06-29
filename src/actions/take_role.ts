@@ -3,6 +3,7 @@ import { Base } from './base'
 
 export class TakeRole extends Base {
   static readonly BASE_TYPE: string = "take.role";
+  static readonly EXTRA_TYPES: string[] = ["citizen"];
   type: string = TakeRole.BASE_TYPE;
 
   roleName: string;

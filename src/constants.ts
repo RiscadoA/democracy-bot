@@ -1,5 +1,4 @@
 import * as Discord from "discord.js"
-import COMMANDS_ from "./commands";
 import { ActionConfig } from "./config";
 
 export default abstract class Constants {
@@ -96,6 +95,13 @@ export default abstract class Constants {
     "main": {},
     "vc": {},
     "admin": {
+      "config": [
+        {
+          id: Constants.PARTIAL_ROLE_IDS["Admin"],
+          type: "role",
+          deny: ["SEND_MESSAGES", "MANAGE_MESSAGES"],
+        }
+      ],
       "log": [
         {
           id: Constants.PARTIAL_ROLE_IDS["Admin"],
@@ -119,7 +125,8 @@ export default abstract class Constants {
     "vc": [],
     "admin": [
       "general",
-      "log"
+      "config",
+      "log",
     ],
     "archive": [],
     "bot": [
@@ -196,6 +203,4 @@ export default abstract class Constants {
   static readonly SETUP_FAILED_MSG: string =
     "Couldn't setup the server, have you followed the instructions of the previous message? "     +
     "To retry, make everyone leave the server and rejoin it."
-
-  static readonly COMMANDS = COMMANDS_;
 }

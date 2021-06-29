@@ -3,6 +3,7 @@ require('dotenv').config()
 import * as Discord from "discord.js";
 import * as Actions from "./actions";
 import Constants from "./constants";
+import COMMANDS from "./commands";
 import Config from "./config";
 import { buildGuild, setupGuild, startGuild } from "./guild";
 import { startVote, submitVote } from "./vote";
@@ -17,7 +18,9 @@ client.on("debug", (e) => console.info(e));
 
 client.on('ready', async () => {
   console.log('Democracy bot online!');
-  await buildGuild(client);
+  const guild = await buildGuild(client);
+  await Config.load(guild);
+  await Config.store(guild);
 });
 
 client.on('guildMemberAdd', async member => {
@@ -38,7 +41,7 @@ client.on('interaction', async interaction => {
     await submitVote(interaction);
   }
   else if (interaction.isCommand()) {
-    const cmd = Constants.COMMANDS.find(cmd => cmd.data.name === interaction.commandName);
+    const cmd = COMMANDS.find(cmd => cmd.data.name === interaction.commandName);
     if (!cmd) {
       return;
     }
@@ -46,7 +49,7 @@ client.on('interaction', async interaction => {
     interaction.defer({ ephemeral: true });
     let action = await cmd.callback(interaction);
     if (action) {
-      if (Config.actions[action.type]?.needsVote) {
+      if (Config.actions.get(action.type)?.needsVote) {
         await startVote(guild, interaction.user.id, action);
         await interaction.editReply("This action requires a vote, and so a vote will be started");
       }

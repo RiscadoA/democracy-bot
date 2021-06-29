@@ -4,6 +4,7 @@ import { Base } from './base'
 
 export class Kick extends Base {
   static readonly BASE_TYPE: string = "kick";
+  static readonly EXTRA_TYPES: string[] = ["citizen"];
   type: string = Kick.BASE_TYPE;
   
   user: Snowflake;

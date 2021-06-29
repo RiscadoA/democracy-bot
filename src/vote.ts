@@ -143,7 +143,7 @@ export async function submitVote(interaction: MessageComponentInteraction) {
   }
 
   // Check if voting ended
-  const config = Config.actions[action.type];
+  const config = Config.actions.get(action.type);
   const earlyVotes = Math.min(config.earlyVotes, citizen.members.size);
   const lateVotes = Math.min(config.lateVotes, citizen.members.size);
   const totalVotes = data.yes + data.no;

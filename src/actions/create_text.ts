@@ -4,6 +4,7 @@ import { archiveStore } from "../archive";
 
 export class CreateText extends Base {
   static readonly BASE_TYPE: string = "create.text";
+  static readonly EXTRA_TYPES: string[] = [];
   type: string = CreateText.BASE_TYPE;
   
   name: string;
@@ -52,6 +53,6 @@ export class CreateText extends Base {
   }
 
   what() {
-    return `Created text channel ${this.name}`;
+    return `Create text channel ${this.name}`;
   }
 }

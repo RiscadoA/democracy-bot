@@ -2,7 +2,7 @@ import Base from './base'
 import Reload from './reload';
 import Undo from './undo';
 import Kick from './kick';
-import Edit from './edit';
+import Set from './set';
 import Create from './create';
 import Delete from './delete';
 import Give from './give';
@@ -12,7 +12,7 @@ const COMMANDS: Base[] = [
   new Reload,
   new Undo,
   new Kick,
-  new Edit,
+  new Set,
   new Create,
   new Delete,
   new Give,

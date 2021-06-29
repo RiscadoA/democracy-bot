@@ -3,6 +3,7 @@ import { Base } from './base'
 
 export class CreateRole extends Base {
   static readonly BASE_TYPE: string = "create.role";
+  static readonly EXTRA_TYPES: string[] = [];
   type: string = CreateRole.BASE_TYPE;
   
   roleOptions: CreateRoleOptions;
@@ -22,6 +23,6 @@ export class CreateRole extends Base {
   }
 
   what() {
-    return `Created role ${this.roleOptions.name}`;
+    return `Create role ${this.roleOptions.name}`;
   }
 }

@@ -3,6 +3,7 @@ import { Base } from './base'
 
 export class DeleteRole extends Base {
   static readonly BASE_TYPE: string = "delete.role";
+  static readonly EXTRA_TYPES: string[] = [];
   type: string = DeleteRole.BASE_TYPE;
 
   roleOptions: CreateRoleOptions;
@@ -30,6 +31,6 @@ export class DeleteRole extends Base {
   }
 
   what() {
-    return `Deleted role ${this.roleOptions.name}`;
+    return `Delete role ${this.roleOptions.name}`;
   }
 }

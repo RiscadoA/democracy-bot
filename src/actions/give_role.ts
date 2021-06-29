@@ -3,6 +3,7 @@ import { Base } from './base'
 
 export class GiveRole extends Base {
   static readonly BASE_TYPE: string = "give.role";
+  static readonly EXTRA_TYPES: string[] = [];
   type: string = GiveRole.BASE_TYPE;
 
   roleName: string;
@@ -18,7 +19,7 @@ export class GiveRole extends Base {
     const member = await guild.members.fetch(this.user);
     const role = await guild.roles.cache.find(r => r.name == this.roleName);
     if (member && role) {
-      member.roles.remove(role);
+      await member.roles.remove(role);
     }
     return true;
   }
@@ -27,11 +28,11 @@ export class GiveRole extends Base {
     const member = await guild.members.fetch(this.user);
     const role = await guild.roles.cache.find(r => r.name == this.roleName);
     if (member && role) {
-      member.roles.add(role);
+      await member.roles.add(role);
     }
   }
 
   what() {
-    return `Gave role ${this.roleName} to user <@${this.user}>`;
+    return `Give role ${this.roleName} to user <@${this.user}>`;
   }
 }
