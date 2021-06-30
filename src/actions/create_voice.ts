@@ -1,6 +1,5 @@
-import { GuildChannelCreateOptions, Guild, TextChannel } from "discord.js";
+import { GuildChannelCreateOptions, Guild, VoiceChannel } from "discord.js";
 import { Base } from './base'
-import { archiveStore } from "../archive";
 
 export class CreateVoice extends Base {
   static readonly BASE_TYPE: string = "create.voice";
@@ -18,7 +17,7 @@ export class CreateVoice extends Base {
 
   async revert(guild: Guild) {
     const channel = await guild.channels.cache.find(ch => ch.name === this.name && ch.type === "voice") as VoiceChannel;
-    await archiveStore(guild, channel)
+    await channel.delete();
     return true;
   }
 

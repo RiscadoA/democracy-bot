@@ -75,6 +75,7 @@ export default class Create implements Base {
     const guild = interaction.guild;
     const role_options = interaction.options.get("role")?.options;
     const text_options = interaction.options.get("text")?.options;
+    const voice_options = interaction.options.get("voice")?.options;
     
     // create role
     if (role_options) {
@@ -115,9 +116,9 @@ export default class Create implements Base {
       return new Actions.CreateText(name, role?.name);
     }
     // create voice
-    else if (text_options) {
-      let name = text_options.get("name").value as string;
-      const role = text_options.get("role")?.role;
+    else if (voice_options) {
+      let name = voice_options.get("name").value as string;
+      const role = voice_options.get("role")?.role;
 
       // Process name
       name = name.toLowerCase().replace(/ /g, '-');
