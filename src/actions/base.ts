@@ -5,7 +5,7 @@ export function getAllTypes(): string[] {
   return Object.keys(Actions)
     .filter(key => key !== "Base" && Actions[key].prototype && Actions[key].BASE_TYPE)
     .map(key => [Actions[key].BASE_TYPE, ...(Actions[key].EXTRA_TYPES ? Actions[key].EXTRA_TYPES.map(t => Actions[key].BASE_TYPE + "." + t) : [])])
-    .reduce((prev: string[], cur: string[]) =>[].concat(...prev, ...cur));
+    .reduce((prev: string[], cur: string[]) => [].concat(...prev, ...cur));
 }
 
 export abstract class Base {

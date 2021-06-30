@@ -6,7 +6,7 @@ import Constants from "./constants";
 import COMMANDS from "./commands";
 import Config from "./config";
 import { buildGuild, setupGuild, startGuild } from "./guild";
-import { startVote, submitVote } from "./vote";
+import { loadVotes, startVote, submitVote } from "./vote";
 
 const client = new Discord.Client({ intents: Discord.Intents.ALL });
 
@@ -21,6 +21,7 @@ client.on('ready', async () => {
   const guild = await buildGuild(client);
   await Config.load(guild);
   await Config.store(guild);
+  await loadVotes(guild);
 });
 
 client.on('guildMemberAdd', async member => {
