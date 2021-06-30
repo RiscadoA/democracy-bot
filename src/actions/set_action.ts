@@ -28,6 +28,6 @@ export class SetAction extends Base {
   }
 
   what() {
-    return `Change action configuration to ${this.next}`; // TODO: Make this pretty
+    return `Change action ${this.name} configuration to ${JSON.stringify(this.next)}`; // TODO: Make this pretty
   }
 }
