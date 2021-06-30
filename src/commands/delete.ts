@@ -70,7 +70,7 @@ export default class Delete implements Base {
       const channelId = channel_options.get("name").channel.id;
       const channel = await guild.channels.fetch(channelId);
       
-      if (!channel.parent || channel.parent.name !== "main") {
+      if (!channel.parent || (channel.parent.name !== "main" && channel.parent.name !== "vc")) {
         await interaction.editReply("Reserved channel, can't be deleted");
         return null;
       }
