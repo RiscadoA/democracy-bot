@@ -70,19 +70,25 @@ export default class Delete implements Base {
       const channelId = channel_options.get("name").channel.id;
       const channel = await guild.channels.fetch(channelId);
       
-      // TODO: Add voice channels
-
-      if (!channel.isText()) {
-        await interaction.editReply("Must be a text channel");
-        return null;
-      }
-
       if (!channel.parent || channel.parent.name !== "main") {
         await interaction.editReply("Reserved channel, can't be deleted");
         return null;
       }
+      else if (channel.type === "text") {
+        return new Actions.DeleteText(channel.id);
+      }
+      else if (channel.type === "voice") {
+        let roles = (await Promise.all(channel.permissionOverwrites
+          .filter(p => p.id !== guild.roles.everyone.id && p.id != adminRole.id)
+          .map(async p => (await guild.roles.fetch(p.id))?.name)))
+          .filter(r => r); // Remove undefined
 
-      return new Actions.DeleteText(channel.id);
+        return new Actions.DeleteVoice(channel.name, roles);
+      }
+      else {
+        await interaction.editReply("Must be a channel");
+        return null;
+      }
     }
 
     return null;

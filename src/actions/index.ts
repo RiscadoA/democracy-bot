@@ -11,3 +11,4 @@ export * from "./take_role";
 export * from "./create_text";
 export * from "./delete_text";
 export * from "./create_voice";
+export * from "./delete_voice";
