@@ -3,29 +3,23 @@ import Base, { Clearance } from "./base";
 import Constants from "../constants";
 import * as Actions from "../actions";
 
-export default class Create implements Base {
+export default class Restore implements Base {
   clearance: Clearance = "admin";
 
   data = {
-    name: "create",
-    description: "Create a role, or a text or voice channel",
+    name: "restore",
+    description: "Restores a text channel",
     options: [
       {
-        name: "role",
+        name: "text",
         type: 1, // SUB_COMMAND
-        description: 'Create a role',
+        description: 'Restore a text channel',
         options: [
           {
             name: "name",
             type: 3, // STRING
-            description: "The name of the new role",
+            description: "The name of the text channel",
             required: true,
-          },
-          {
-            name: "color",
-            type: 3, // STRING
-            description: "The color of the new role",
-            required: false,
           }
         ]
       },
@@ -108,7 +102,7 @@ export default class Create implements Base {
 
       // Process name
       name = name.toLowerCase().replace(/ /g, '-');
-      if (guild.channels.cache.find(ch => ch.name === name && ch.type === "text" && ch.parent?.name === "main")) {
+      if (guild.channels.cache.find(ch => ch.name == name && ch.type == "text")) {
         await interaction.editReply("Duplicate channel name");
         return null;
       }

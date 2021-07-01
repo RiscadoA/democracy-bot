@@ -103,7 +103,7 @@ async function fetchVotePrivMsg(guild: Guild, publicMsg: Snowflake) {
 }
 
 async function fetchVotePublicMsg(guild: Guild, publicMsg: Snowflake) {
-  const meta = guild.channels.cache.find(ch => ch.name === "votes" && ch.type === "category") as CategoryChannel;
+  const meta = guild.channels.cache.find(ch => ch.name === "meta" && ch.type === "category") as CategoryChannel;
   const democracy = guild.channels.cache.find(ch => ch.name === "democracy" && ch.parent == meta && ch.type === "text") as TextChannel;
   return await democracy.messages.fetch(publicMsg);
 }
@@ -287,9 +287,10 @@ export async function loadVotes(guild: Guild) {
       const time = new Date().getTime() - privMsg.createdAt.getTime();
 
       if (time > 0) {
-        setTimeout(async (privMsg, data) => {
+        // TODO: check after timeout if msg was deleted
+        /*setTimeout(async (privMsg, data) => {
           await updateVoteStatus(guild, privMsg, data);
-        }, time + 1000, privMsg, data);
+        }, time + 1000, privMsg, data);*/
       }
       else {
         await updateVoteStatus(guild, privMsg, data);
